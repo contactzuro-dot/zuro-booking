@@ -1,23 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// PUT handler
+// GET /api/bookings/[id]
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> } // ✅ Promise
+) {
+  const { id } = await context.params; // ✅ await it
+  return NextResponse.json({ message: `Booking ${id} fetched successfully` });
+}
+
+// PUT /api/bookings/[id]
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> } // ✅ Promise
 ) {
-  const { id } = params;
+  const { id } = await context.params;
   const body = await request.json();
 
-  // Your booking update logic here
-
+  // Example: Update booking logic here
   return NextResponse.json({ message: `Booking ${id} updated successfully` });
 }
 
-// GET handler
-export async function GET(
+// DELETE /api/bookings/[id]
+export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> } // ✅ Promise
 ) {
-  const { id } = params;
-  return NextResponse.json({ message: `Booking ${id} fetched successfully` });
+  const { id } = await context.params;
+
+  // Example: Delete booking logic here
+  return NextResponse.json({ message: `Booking ${id} deleted successfully` });
 }
