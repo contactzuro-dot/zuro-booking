@@ -1,21 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { createServerClient } from '@/lib/supabase';
 
-// GET single booking
-export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
-  return NextResponse.json({ message: `Booking ${id} fetched successfully` });
-}
+const supabase = createServerClient();
 
-// PUT update booking
-export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
-  const body = await request.json();
-  return NextResponse.json({ message: `Booking ${id} updated successfully` });
-}
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const body = await request.json();
+    const { data, error } = await supabase
+      .from('bookings')
+      .update(body)
+      .eq('id', id)
+      .select()
+      .single();
 
-// DELETE booking
-export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
-  return NextResponse.json({ message: `Booking ${id} deleted successfully` });
+    if (error) throw error;
+
+    return NextResponse.json(data);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
