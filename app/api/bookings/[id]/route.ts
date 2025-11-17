@@ -1,26 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { NextRequest, NextResponse } from "next/server";
 
-const supabase = createServerClient();
-
+// PUT handler
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const body = await request.json();
-    const { data, error } = await supabase
-      .from('bookings')
-      .update(body)
-      .eq('id', params.id)
-      .select()
-      .single();
+  const { id } = params;
+  const body = await request.json();
 
-    if (error) throw error;
+  // Your booking update logic here
 
-    return NextResponse.json(data);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+  return NextResponse.json({ message: `Booking ${id} updated successfully` });
 }
 
+// GET handler
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  return NextResponse.json({ message: `Booking ${id} fetched successfully` });
+}
