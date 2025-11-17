@@ -1,23 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// PUT handler
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
-  const body = await request.json();
-
-  // Your booking update logic here
-
-  return NextResponse.json({ message: `Booking ${id} updated successfully` });
+// GET all bookings
+export async function GET(request: NextRequest) {
+  // Example: fetch all bookings from Supabase
+  return NextResponse.json({ message: "All bookings fetched successfully" });
 }
 
-// GET handler
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
-  return NextResponse.json({ message: `Booking ${id} fetched successfully` });
+// POST new booking
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+
+  // Example: insert booking into Supabase
+  return NextResponse.json({ message: "Booking created successfully", data: body });
 }
