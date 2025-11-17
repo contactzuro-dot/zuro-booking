@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase';
 import { format, addMinutes, getDay, isBefore, isAfter } from 'date-fns';
 
-const supabase = createServerClient();
-
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createServerClient();
     const searchParams = request.nextUrl.searchParams;
     const dateStr = searchParams.get('date');
     const serviceId = searchParams.get('serviceId');

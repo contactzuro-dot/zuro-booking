@@ -3,10 +3,8 @@ import { stripe } from '@/lib/stripe';
 import { createServerClient } from '@/lib/supabase';
 import Stripe from 'stripe';
 
-const supabase = createServerClient();
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
 export async function POST(request: NextRequest) {
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
 
@@ -28,6 +26,7 @@ export async function POST(request: NextRequest) {
     const bookingId = session.metadata?.booking_id;
 
     if (bookingId) {
+      const supabase = createServerClient();
       await supabase
         .from('bookings')
         .update({
